@@ -1,0 +1,1813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Audio — Coimbatore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #C9973A;
+    --gold-light: #E8BA5A;
+    --gold-dim: #7a5a22;
+    --black: #060608;
+    --black2: #0e0e12;
+    --black3: #161619;
+    --black4: #1e1e23;
+    --white: #F5F0E8;
+    --white-dim: #a89e8e;
+    --white-mute: #5a5550;
+    --serif: 'Cormorant Garamond', serif;
+    --sans: 'DM Sans', sans-serif;
+    --display: 'Bebas Neue', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--sans);
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* PAGE SYSTEM */
+  .page { display: none; animation: fadeIn 0.5s ease; }
+  .page.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 60px;
+    height: 72px;
+    background: linear-gradient(to bottom, rgba(6,6,8,0.98) 0%, rgba(6,6,8,0.0) 100%);
+    transition: background 0.3s;
+  }
+  nav.scrolled { background: rgba(6,6,8,0.97); border-bottom: 1px solid rgba(201,151,58,0.15); }
+
+  .nav-logo {
+    font-family: var(--display);
+    font-size: 22px;
+    letter-spacing: 0.08em;
+    color: var(--white);
+    cursor: pointer;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-logo-icon {
+    width: 32px; height: 32px;
+    border: 1.5px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .nav-logo-icon::before {
+    content: '';
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+
+  .nav-links { display: flex; align-items: center; gap: 40px; }
+  .nav-links a {
+    font-size: 12px; font-weight: 400;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--white-dim);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+    height: 1px; background: var(--gold);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+
+  .nav-cta {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 9px 22px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: var(--sans);
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--black); }
+
+  /* GOLD LINE DIVIDER */
+  .gold-line {
+    width: 60px; height: 1px;
+    background: linear-gradient(to right, var(--gold), transparent);
+    margin-bottom: 20px;
+  }
+
+  /* ================================================
+     PAGE 1 — HOME
+  ================================================ */
+
+  /* HERO */
+  .hero {
+    height: 100vh; min-height: 700px;
+    display: flex; align-items: center;
+    position: relative; overflow: hidden;
+    padding: 0 60px;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 70% 50%, rgba(201,151,58,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 30% 60% at 85% 20%, rgba(201,151,58,0.04) 0%, transparent 60%);
+  }
+
+  /* Grid texture overlay */
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(201,151,58,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,151,58,0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+  }
+
+  .hero-content { position: relative; z-index: 2; max-width: 800px; }
+
+  .hero-eyebrow {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 28px;
+  }
+  .hero-eyebrow span {
+    font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 400;
+  }
+  .hero-eyebrow-line { flex: 1; max-width: 60px; height: 1px; background: var(--gold); opacity: 0.5; }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(56px, 9vw, 120px);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+    display: block;
+    font-weight: 300;
+  }
+
+  .hero-sub {
+    font-size: 15px; font-weight: 300;
+    color: var(--white-dim);
+    line-height: 1.7;
+    max-width: 440px;
+    margin-bottom: 48px;
+  }
+
+  .hero-actions { display: flex; gap: 20px; align-items: center; }
+
+  .btn-gold {
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 15px 36px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: var(--sans);
+  }
+  .btn-gold:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--white-dim);
+    border: none;
+    padding: 15px 0;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.2s;
+    font-family: var(--sans);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .btn-ghost::after { content: '→'; font-size: 14px; transition: transform 0.2s; }
+  .btn-ghost:hover { color: var(--white); }
+  .btn-ghost:hover::after { transform: translateX(4px); }
+
+  .hero-scroll {
+    position: absolute; bottom: 40px; left: 60px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--white-mute);
+  }
+  .hero-scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  .hero-badge {
+    position: absolute; right: 60px; bottom: 80px;
+    width: 120px; height: 120px;
+    border: 1px solid rgba(201,151,58,0.3);
+    border-radius: 50%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 2px;
+    animation: rotateBadge 20s linear infinite;
+  }
+  @keyframes rotateBadge { to { transform: rotate(360deg); } }
+  .hero-badge-inner {
+    position: absolute;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    animation: rotateBadge 20s linear infinite reverse;
+  }
+  .hero-badge-inner span:first-child {
+    font-family: var(--display);
+    font-size: 28px;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .hero-badge-inner span:last-child {
+    font-size: 8px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--white-mute);
+  }
+
+  /* SERVICES STRIP */
+  .services-strip {
+    border-top: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding: 28px 60px;
+    display: flex; align-items: center; gap: 0;
+    background: var(--black2);
+    overflow: hidden;
+  }
+  .strip-item {
+    display: flex; align-items: center; gap: 16px;
+    flex: 1;
+    padding: 0 40px;
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+  .strip-item:last-child { border-right: none; }
+  .strip-icon {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(201,151,58,0.3);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .strip-icon svg { width: 16px; height: 16px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
+  .strip-text span:first-child {
+    display: block; font-size: 13px; font-weight: 500; color: var(--white);
+  }
+  .strip-text span:last-child {
+    font-size: 11px; color: var(--white-mute);
+  }
+
+  /* ABOUT SECTION */
+  .section { padding: 120px 60px; }
+  .section-alt { background: var(--black2); }
+
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+
+  .section-label {
+    font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 20px;
+  }
+
+  .section-heading {
+    font-family: var(--serif);
+    font-size: clamp(36px, 4vw, 58px);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 28px;
+  }
+  .section-heading em { font-style: italic; color: var(--gold); }
+
+  .section-body {
+    font-size: 15px; font-weight: 300;
+    color: var(--white-dim); line-height: 1.8;
+    margin-bottom: 20px;
+  }
+
+  .about-stats {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.06);
+    margin-top: 48px;
+  }
+  .stat-box {
+    background: var(--black);
+    padding: 32px 28px;
+  }
+  .section-alt .stat-box { background: var(--black2); }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 52px; font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-label {
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--white-mute);
+  }
+
+  .about-visual {
+    position: relative;
+  }
+  .about-img-box {
+    background: var(--black3);
+    border: 1px solid rgba(201,151,58,0.15);
+    aspect-ratio: 4/5;
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .about-img-box::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(135deg, rgba(201,151,58,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 30% 70%, rgba(201,151,58,0.05) 0%, transparent 60%);
+  }
+  .about-img-inner {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; align-items: center; gap: 20px;
+  }
+  .sound-wave {
+    display: flex; align-items: center; gap: 4px; height: 80px;
+  }
+  .sound-wave-bar {
+    width: 3px;
+    background: var(--gold);
+    border-radius: 2px;
+    animation: wave 1.4s ease-in-out infinite;
+  }
+  .sound-wave-bar:nth-child(2) { animation-delay: 0.1s; }
+  .sound-wave-bar:nth-child(3) { animation-delay: 0.2s; }
+  .sound-wave-bar:nth-child(4) { animation-delay: 0.3s; }
+  .sound-wave-bar:nth-child(5) { animation-delay: 0.4s; }
+  .sound-wave-bar:nth-child(6) { animation-delay: 0.3s; }
+  .sound-wave-bar:nth-child(7) { animation-delay: 0.2s; }
+  .sound-wave-bar:nth-child(8) { animation-delay: 0.1s; }
+  .sound-wave-bar:nth-child(9) { animation-delay: 0s; }
+  @keyframes wave {
+    0%, 100% { height: 20%; opacity: 0.3; }
+    50% { height: 100%; opacity: 1; }
+  }
+  .about-img-label {
+    font-family: var(--display);
+    font-size: 14px; letter-spacing: 0.2em;
+    color: var(--gold-dim);
+  }
+  .about-accent {
+    position: absolute; top: -20px; right: -20px;
+    width: 80px; height: 80px;
+    border: 1px solid rgba(201,151,58,0.2);
+  }
+  .about-accent2 {
+    position: absolute; bottom: -20px; left: -20px;
+    width: 120px; height: 120px;
+    border: 1px solid rgba(201,151,58,0.1);
+  }
+
+  /* SERVICES OVERVIEW */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.05);
+    margin-top: 60px;
+  }
+  .service-card {
+    background: var(--black);
+    padding: 48px 36px;
+    cursor: pointer;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--gold), transparent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-card:hover { background: var(--black3); }
+
+  .service-number {
+    font-family: var(--display);
+    font-size: 60px;
+    color: rgba(201,151,58,0.1);
+    line-height: 1;
+    margin-bottom: 20px;
+    transition: color 0.3s;
+  }
+  .service-card:hover .service-number { color: rgba(201,151,58,0.25); }
+
+  .service-icon {
+    width: 44px; height: 44px; margin-bottom: 24px;
+    border: 1px solid rgba(201,151,58,0.3);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .service-icon svg { width: 20px; height: 20px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
+
+  .service-title {
+    font-family: var(--serif);
+    font-size: 24px; font-weight: 400;
+    margin-bottom: 16px;
+    color: var(--white);
+  }
+  .service-desc {
+    font-size: 13px; font-weight: 300;
+    color: var(--white-mute); line-height: 1.7;
+    margin-bottom: 28px;
+  }
+  .service-link {
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+    transition: gap 0.2s;
+  }
+  .service-link::after { content: '→'; }
+  .service-card:hover .service-link { gap: 14px; }
+
+  /* BRANDS MARQUEE */
+  .brands-section {
+    padding: 60px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .brands-label {
+    font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--white-mute); text-align: center; margin-bottom: 40px;
+  }
+  .marquee-wrapper { overflow: hidden; position: relative; }
+  .marquee-wrapper::before, .marquee-wrapper::after {
+    content: '';
+    position: absolute; top: 0; bottom: 0; width: 100px; z-index: 2;
+    pointer-events: none;
+  }
+  .marquee-wrapper::before { left: 0; background: linear-gradient(to right, var(--black), transparent); }
+  .marquee-wrapper::after { right: 0; background: linear-gradient(to left, var(--black), transparent); }
+  .marquee-track {
+    display: flex; gap: 60px; align-items: center;
+    animation: marquee 20s linear infinite;
+    width: max-content;
+  }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+  .brand-name {
+    font-family: var(--display);
+    font-size: 20px; letter-spacing: 0.1em;
+    color: var(--white-mute);
+    white-space: nowrap;
+    transition: color 0.2s;
+  }
+  .brand-name:hover { color: var(--gold); }
+  .brand-dot { color: var(--gold); font-size: 6px; }
+
+  /* CONTACT STRIP */
+  .contact-strip {
+    padding: 80px 60px;
+    background: var(--black3);
+    border-top: 1px solid rgba(201,151,58,0.12);
+    border-bottom: 1px solid rgba(201,151,58,0.12);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 60px;
+    align-items: center;
+  }
+  .contact-text h2 {
+    font-family: var(--serif);
+    font-size: 42px; font-weight: 300;
+    margin-bottom: 12px;
+  }
+  .contact-text h2 em { font-style: italic; color: var(--gold); }
+  .contact-text p { font-size: 14px; color: var(--white-mute); }
+  .contact-info { display: flex; flex-direction: column; gap: 20px; align-items: flex-end; }
+  .contact-detail {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 14px; color: var(--white-dim);
+  }
+  .contact-detail-icon {
+    width: 32px; height: 32px;
+    border: 1px solid rgba(201,151,58,0.25);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .contact-detail-icon svg { width: 14px; height: 14px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-logo {
+    font-family: var(--display);
+    font-size: 16px; letter-spacing: 0.1em;
+    color: var(--white-mute);
+  }
+  .footer-logo span { color: var(--gold); }
+  .footer-copy { font-size: 11px; color: var(--white-mute); }
+  .footer-links { display: flex; gap: 28px; }
+  .footer-links a {
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--white-mute); cursor: pointer; text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+
+  /* ================================================
+     PAGE 2 — HOME THEATER
+  ================================================ */
+
+  .page-hero {
+    height: 60vh; min-height: 500px;
+    display: flex; align-items: flex-end;
+    padding: 0 60px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-hero-bg {
+    position: absolute; inset: 0;
+    background: var(--black2);
+  }
+
+  .theater-bg-vis {
+    position: absolute; right: 0; top: 0; bottom: 0; width: 55%;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+
+  .theater-screen {
+    width: 70%; aspect-ratio: 16/9;
+    border: 1px solid rgba(201,151,58,0.25);
+    position: relative;
+    background: rgba(201,151,58,0.03);
+  }
+  .theater-screen::before {
+    content: '';
+    position: absolute; inset: 8px;
+    border: 1px solid rgba(201,151,58,0.1);
+  }
+  .theater-glow {
+    position: absolute; inset: -30px;
+    background: radial-gradient(ellipse at center, rgba(201,151,58,0.06) 0%, transparent 70%);
+  }
+
+  .theater-seats {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    display: flex; justify-content: center; gap: 6px;
+    padding-bottom: 40px;
+  }
+  .seat-row { display: flex; gap: 4px; }
+  .seat {
+    width: 14px; height: 12px;
+    background: rgba(201,151,58,0.12);
+    border: 1px solid rgba(201,151,58,0.2);
+    border-radius: 2px 2px 0 0;
+    flex-shrink: 0;
+  }
+
+  .fade-left {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 40%;
+    background: linear-gradient(to right, var(--black2) 40%, transparent);
+  }
+  .fade-top {
+    position: absolute; top: 0; left: 0; right: 0; height: 60%;
+    background: linear-gradient(to bottom, var(--black) 0%, transparent);
+  }
+
+  .page-hero-content { position: relative; z-index: 2; }
+
+  .page-eyebrow {
+    font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .page-eyebrow::before {
+    content: ''; display: block;
+    width: 30px; height: 1px;
+    background: var(--gold);
+  }
+
+  .page-title {
+    font-family: var(--serif);
+    font-size: clamp(42px, 6vw, 80px);
+    font-weight: 300; line-height: 0.95;
+    margin-bottom: 20px;
+  }
+  .page-title em { font-style: italic; color: var(--gold); }
+
+  .page-subtitle {
+    font-size: 14px; font-weight: 300;
+    color: var(--white-dim); max-width: 440px;
+    line-height: 1.7;
+  }
+
+  /* PACKAGES */
+  .packages-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.05);
+    margin-bottom: 1px;
+  }
+
+  .package-card {
+    background: var(--black);
+    padding: 44px 36px;
+    position: relative;
+    transition: background 0.3s;
+  }
+  .package-card:hover { background: var(--black3); }
+  .package-card.featured {
+    background: var(--black3);
+    border-top: 2px solid var(--gold);
+  }
+
+  .package-tag {
+    display: inline-block;
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 5px 12px;
+    background: rgba(201,151,58,0.1);
+    color: var(--gold);
+    border: 1px solid rgba(201,151,58,0.2);
+    margin-bottom: 28px;
+  }
+
+  .package-name {
+    font-family: var(--serif);
+    font-size: 28px; font-weight: 300;
+    margin-bottom: 6px;
+  }
+  .package-price {
+    font-family: var(--display);
+    font-size: 42px;
+    color: var(--gold);
+    line-height: 1;
+    margin: 16px 0;
+  }
+  .package-price span {
+    font-family: var(--sans);
+    font-size: 12px; color: var(--white-mute);
+    font-weight: 300;
+    vertical-align: middle;
+    margin-left: 4px;
+  }
+  .package-desc {
+    font-size: 12px; color: var(--white-mute);
+    line-height: 1.6; margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .feature-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .feature-list li {
+    display: flex; gap: 12px; align-items: flex-start;
+    font-size: 13px; color: var(--white-dim); font-weight: 300;
+  }
+  .feature-list li::before {
+    content: '';
+    width: 16px; height: 16px; flex-shrink: 0;
+    border: 1px solid rgba(201,151,58,0.4);
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8l3.5 3.5L13 5' stroke='%23C9973A' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/12px no-repeat;
+  }
+  .feature-list li.disabled { opacity: 0.35; }
+  .feature-list li.disabled::before {
+    background: none;
+    border-color: rgba(255,255,255,0.15);
+  }
+
+  /* PROCESS */
+  .process-section { padding: 120px 60px; background: var(--black2); }
+
+  .process-steps {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0; margin-top: 60px;
+    border: 1px solid rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.05);
+  }
+  .process-step {
+    background: var(--black2);
+    padding: 44px 32px;
+    position: relative;
+  }
+  .process-step-num {
+    font-family: var(--display);
+    font-size: 64px; color: rgba(201,151,58,0.12);
+    line-height: 1; margin-bottom: 20px;
+  }
+  .process-step-title {
+    font-family: var(--serif);
+    font-size: 20px; font-weight: 400;
+    margin-bottom: 12px;
+  }
+  .process-step-desc {
+    font-size: 13px; font-weight: 300;
+    color: var(--white-mute); line-height: 1.6;
+  }
+  .process-step-arrow {
+    position: absolute; right: -14px; top: 50%;
+    transform: translateY(-50%);
+    width: 28px; height: 28px;
+    background: var(--black2);
+    border: 1px solid rgba(201,151,58,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: var(--gold);
+    z-index: 2;
+  }
+  .process-step:last-child .process-step-arrow { display: none; }
+
+  /* BRANDS SECTION */
+  .brands-grid {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    margin-top: 48px;
+  }
+  .brand-pill {
+    padding: 10px 20px;
+    border: 1px solid rgba(201,151,58,0.2);
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--white-dim);
+    background: transparent;
+    transition: all 0.2s;
+    cursor: default;
+  }
+  .brand-pill:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(201,151,58,0.05);
+  }
+
+  /* ================================================
+     PAGE 3 — AUDIO RENTAL
+  ================================================ */
+
+  .rental-bg-vis {
+    position: absolute; right: 0; top: 0; bottom: 0; width: 55%;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .speaker-art {
+    position: relative;
+    width: 200px; height: 300px;
+  }
+  .speaker-body {
+    position: absolute; inset: 0;
+    border: 1px solid rgba(201,151,58,0.2);
+    background: rgba(201,151,58,0.02);
+  }
+  .speaker-cone {
+    position: absolute; top: 40px; left: 50%;
+    transform: translateX(-50%);
+    width: 120px; height: 120px;
+    border: 1px solid rgba(201,151,58,0.25);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .speaker-cone::after {
+    content: '';
+    width: 40px; height: 40px;
+    border: 1px solid rgba(201,151,58,0.3);
+    border-radius: 50%;
+  }
+  .speaker-mid {
+    position: absolute; bottom: 80px; left: 50%;
+    transform: translateX(-50%);
+    width: 70px; height: 70px;
+    border: 1px solid rgba(201,151,58,0.2);
+    border-radius: 50%;
+  }
+  .speaker-port {
+    position: absolute; bottom: 30px; left: 50%;
+    transform: translateX(-50%);
+    width: 60px; height: 12px;
+    border: 1px solid rgba(201,151,58,0.2);
+  }
+  .speaker-pulse {
+    position: absolute;
+    border: 1px solid rgba(201,151,58,0.1);
+    border-radius: 50%;
+    animation: pulse 3s ease-out infinite;
+  }
+  .speaker-pulse:nth-child(1) { width: 260px; height: 260px; top: -30px; left: -30px; animation-delay: 0s; }
+  .speaker-pulse:nth-child(2) { width: 340px; height: 340px; top: -70px; left: -70px; animation-delay: 1s; }
+  .speaker-pulse:nth-child(3) { width: 420px; height: 420px; top: -110px; left: -110px; animation-delay: 2s; }
+  @keyframes pulse {
+    0% { opacity: 0.4; transform: scale(0.95); }
+    50% { opacity: 0.1; }
+    100% { opacity: 0; transform: scale(1.05); }
+  }
+
+  /* EVENT GRID */
+  .event-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.05);
+    margin-top: 60px;
+  }
+
+  .event-card {
+    background: var(--black);
+    padding: 40px 32px;
+    transition: all 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+  .event-card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, rgba(6,6,8,0.88) 0%, rgba(6,6,8,0.75) 50%, rgba(6,6,8,0.88) 100%);
+    transition: background 0.4s;
+    z-index: 0;
+  }
+  .event-card:hover .event-card-overlay {
+    background: linear-gradient(160deg, rgba(6,6,8,0.72) 0%, rgba(6,6,8,0.55) 50%, rgba(6,6,8,0.72) 100%);
+  }
+  .event-card > *:not(.event-card-overlay) { position: relative; z-index: 1; }
+  .event-card::before {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--gold), transparent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s;
+    z-index: 2;
+  }
+  .event-card:hover::before { transform: scaleX(1); }
+
+  .event-card-top {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .event-icon {
+    width: 48px; height: 48px;
+    border: 1px solid rgba(201,151,58,0.25);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .event-icon svg { width: 22px; height: 22px; stroke: var(--gold); }
+  .event-num {
+    font-family: var(--display);
+    font-size: 48px; line-height: 1;
+    color: rgba(201,151,58,0.1);
+    transition: color 0.3s;
+  }
+  .event-card:hover .event-num { color: rgba(201,151,58,0.22); }
+
+  .event-name {
+    font-family: var(--serif);
+    font-size: 24px; font-weight: 400;
+    margin-bottom: 12px;
+    color: var(--white);
+  }
+  .event-desc {
+    font-size: 13px; font-weight: 300;
+    color: var(--white-mute); line-height: 1.7;
+    margin-bottom: 24px;
+  }
+  .event-tags {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .etag {
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 5px 10px;
+    border: 1px solid rgba(201,151,58,0.2);
+    color: var(--gold-dim);
+    background: rgba(201,151,58,0.04);
+    transition: all 0.2s;
+  }
+  .event-card:hover .etag {
+    border-color: rgba(201,151,58,0.35);
+    color: var(--gold);
+    background: rgba(201,151,58,0.08);
+  }
+
+  /* RENTAL PACKAGES */
+  .rental-packages {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 1px;
+    background: rgba(255,255,255,0.05);
+    margin-top: 1px;
+  }
+  .rental-pkg {
+    background: var(--black);
+    padding: 48px 36px;
+    transition: background 0.3s;
+  }
+  .rental-pkg:hover { background: var(--black3); }
+  .rental-pkg.center-pkg {
+    background: var(--black3);
+    border-top: 2px solid var(--gold);
+    padding: 60px 48px;
+  }
+
+  .pkg-tag {
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 20px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .pkg-tag::before {
+    content: ''; display: block;
+    width: 20px; height: 1px; background: var(--gold);
+  }
+
+  .pkg-name {
+    font-family: var(--serif);
+    font-size: 32px; font-weight: 300; margin-bottom: 10px;
+  }
+  .pkg-desc {
+    font-size: 13px; font-weight: 300;
+    color: var(--white-mute); line-height: 1.7;
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .pkg-includes {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--white-mute); margin-bottom: 16px;
+  }
+  .pkg-item {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; color: var(--white-dim);
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-weight: 300;
+  }
+  .pkg-item::before {
+    content: '';
+    width: 4px; height: 4px;
+    background: var(--gold);
+    border-radius: 50%; flex-shrink: 0;
+  }
+
+  /* BOOKING */
+  .booking-section {
+    padding: 100px 60px;
+    background: var(--black3);
+    border-top: 1px solid rgba(201,151,58,0.12);
+  }
+  .booking-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: start;
+    margin-top: 60px;
+  }
+  .booking-info h3 {
+    font-family: var(--serif);
+    font-size: 32px; font-weight: 300;
+    margin-bottom: 20px;
+  }
+  .booking-info h3 em { font-style: italic; color: var(--gold); }
+  .booking-info p {
+    font-size: 14px; font-weight: 300;
+    color: var(--white-dim); line-height: 1.8;
+    margin-bottom: 32px;
+  }
+  .booking-steps { display: flex; flex-direction: column; gap: 20px; }
+  .booking-step {
+    display: flex; gap: 20px; align-items: flex-start;
+  }
+  .booking-step-num {
+    width: 32px; height: 32px; flex-shrink: 0;
+    border: 1px solid rgba(201,151,58,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--display);
+    font-size: 16px;
+    color: var(--gold);
+  }
+  .booking-step-text span:first-child {
+    display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;
+  }
+  .booking-step-text span:last-child {
+    font-size: 12px; color: var(--white-mute); font-weight: 300;
+  }
+
+  .booking-form { display: flex; flex-direction: column; gap: 16px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-field { display: flex; flex-direction: column; gap: 8px; }
+  .form-field label {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--white-mute);
+  }
+  .form-field input, .form-field select, .form-field textarea {
+    background: var(--black4);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--white);
+    padding: 14px 16px;
+    font-size: 13px;
+    font-family: var(--sans);
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    -webkit-appearance: none;
+  }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus {
+    border-color: rgba(201,151,58,0.5);
+  }
+  .form-field select { cursor: pointer; }
+  .form-field select option { background: var(--black3); }
+  .form-field textarea { resize: vertical; min-height: 100px; }
+  .form-submit {
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 16px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: var(--sans);
+  }
+  .form-submit:hover { background: var(--gold-light); }
+
+  /* MOBILE */
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .nav-links { gap: 20px; }
+    .hero { padding: 0 24px; }
+    .hero-title { font-size: 52px; }
+    .hero-badge { display: none; }
+    .section { padding: 80px 24px; }
+    .about-grid, .booking-grid { grid-template-columns: 1fr; gap: 40px; }
+    .services-grid, .packages-grid, .equipment-grid, .event-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr 1fr; }
+    .rental-packages { grid-template-columns: 1fr; }
+    .page-hero { padding: 0 24px 60px; }
+    .theater-bg-vis, .rental-bg-vis { display: none; }
+    .contact-strip { grid-template-columns: 1fr; gap: 32px; }
+    .contact-info { align-items: flex-start; }
+    footer { flex-direction: column; gap: 20px; text-align: center; }
+    .services-strip { flex-direction: column; gap: 20px; }
+    .strip-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); padding: 16px 0; }
+    .strip-item:last-child { border-bottom: none; }
+    .brands-section { padding: 40px 24px; }
+    .form-row { grid-template-columns: 1fr; }
+    .hero-scroll { display: none; }
+    .booking-section { padding: 60px 24px; }
+    .process-section { padding: 60px 24px; }
+    .brands-grid { padding: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div class="nav-logo" onclick="showPage('home')">
+    <div class="nav-logo-icon"></div>
+    DIGITAL <span>AUDIO</span>
+  </div>
+  <div class="nav-links">
+    <a onclick="showPage('home')" id="nav-home" class="active">Home</a>
+    <a onclick="showPage('theater')" id="nav-theater">Home Theater</a>
+    <a onclick="showPage('rental')" id="nav-rental">Audio Rental</a>
+  </div>
+  <button class="nav-cta" onclick="scrollToContact()">Get a Quote</button>
+</nav>
+
+<!-- ===========================
+     PAGE 1 — HOME
+=========================== -->
+<div class="page active" id="page-home">
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span>Coimbatore's Premier Audio Specialists</span>
+        <div class="hero-eyebrow-line"></div>
+      </div>
+      <h1 class="hero-title">
+        Sound Beyond<br>
+        <em>Expectation</em>
+      </h1>
+      <p class="hero-sub">Crafting immersive home theater experiences and powering Coimbatore's events with professional-grade audio solutions since day one.</p>
+      <div class="hero-actions">
+        <button class="btn-gold" onclick="showPage('theater')">Explore Theater Setups</button>
+        <button class="btn-ghost" onclick="showPage('rental')">Audio Rental</button>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+    <div class="hero-badge">
+      <div class="hero-badge-inner">
+        <span>CBE</span>
+        <span>Tamil Nadu</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="services-strip">
+    <div class="strip-item">
+      <div class="strip-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <div class="strip-text">
+        <span>Home Theater Design</span>
+        <span>Custom 4K / Dolby Atmos setups</span>
+      </div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-icon">
+        <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      </div>
+      <div class="strip-text">
+        <span>Professional Audio Rental</span>
+        <span>Events, concerts & celebrations</span>
+      </div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+      </div>
+      <div class="strip-text">
+        <span>Expert Installation</span>
+        <span>End-to-end setup & calibration</span>
+      </div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-icon">
+        <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      </div>
+      <div class="strip-text">
+        <span>AMC & Service</span>
+        <span>Ongoing support & maintenance</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="section about-section">
+    <div class="about-grid">
+      <div>
+        <div class="section-label">About Digital Audio</div>
+        <h2 class="section-heading">We Don't Just Install Audio —<br>We <em>Engineer Experience</em></h2>
+        <p class="section-body">Digital Audio is Coimbatore's trusted name in premium home theater installations and professional audio rental. We bring world-class sound to living rooms, auditoriums, weddings, and corporate events.</p>
+        <p class="section-body">From a compact 5.1 setup to a full Dolby Atmos cinema room, every installation is customised to your space, acoustics, and vision.</p>
+        <div class="about-stats">
+          <div class="stat-box"><div class="stat-num">500+</div><div class="stat-label">Installations Done</div></div>
+          <div class="stat-box"><div class="stat-num">10+</div><div class="stat-label">Years in Coimbatore</div></div>
+          <div class="stat-box"><div class="stat-num">1000+</div><div class="stat-label">Events Powered</div></div>
+          <div class="stat-box"><div class="stat-num">100%</div><div class="stat-label">Client Satisfaction</div></div>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="about-img-box">
+          <div class="about-img-inner">
+            <div class="sound-wave">
+              <div class="sound-wave-bar" style="height:30%"></div>
+              <div class="sound-wave-bar" style="height:60%"></div>
+              <div class="sound-wave-bar" style="height:90%"></div>
+              <div class="sound-wave-bar" style="height:100%"></div>
+              <div class="sound-wave-bar" style="height:70%"></div>
+              <div class="sound-wave-bar" style="height:100%"></div>
+              <div class="sound-wave-bar" style="height:90%"></div>
+              <div class="sound-wave-bar" style="height:60%"></div>
+              <div class="sound-wave-bar" style="height:30%"></div>
+            </div>
+            <div class="about-img-label">DIGITAL AUDIO CBE</div>
+          </div>
+        </div>
+        <div class="about-accent"></div>
+        <div class="about-accent2"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="section-label">What We Do</div>
+    <h2 class="section-heading">Two Core <em>Specialisations</em></h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-number">01</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <div class="service-title">Home Theater Setups</div>
+        <p class="service-desc">Transform any room into a private cinema. From projector screens and 4K displays to Dolby Atmos surround systems, we design and install it all.</p>
+        <div class="service-link" onclick="showPage('theater')">Explore Packages</div>
+      </div>
+      <div class="service-card">
+        <div class="service-number">02</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        </div>
+        <div class="service-title">Audio Rental</div>
+        <p class="service-desc">Premium PA systems, line arrays, subwoofers, mixers, and stage monitors available for events, weddings, concerts, and corporate functions.</p>
+        <div class="service-link" onclick="showPage('rental')">View Equipment</div>
+      </div>
+      <div class="service-card">
+        <div class="service-number">03</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M16.9 16.9l2.1 2.1M4.9 19.1l2.1-2.1M16.9 7.1l2.1-2.1"/></svg>
+        </div>
+        <div class="service-title">Acoustic Consultation</div>
+        <p class="service-desc">Room acoustics analysis, treatment recommendations, and calibration services to make every space sound its absolute best.</p>
+        <div class="service-link" onclick="scrollToContact()">Book Consultation</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="brands-section">
+    <div class="brands-label">Trusted Brands We Work With</div>
+    <div class="marquee-wrapper">
+      <div class="marquee-track">
+        <span class="brand-name">Bose</span><span class="brand-dot">●</span>
+        <span class="brand-name">JBL</span><span class="brand-dot">●</span>
+        <span class="brand-name">Sony</span><span class="brand-dot">●</span>
+        <span class="brand-name">Samsung</span><span class="brand-dot">●</span>
+        <span class="brand-name">Yamaha</span><span class="brand-dot">●</span>
+        <span class="brand-name">Denon</span><span class="brand-dot">●</span>
+        <span class="brand-name">Klipsch</span><span class="brand-dot">●</span>
+        <span class="brand-name">QSC</span><span class="brand-dot">●</span>
+        <span class="brand-name">Harman</span><span class="brand-dot">●</span>
+        <span class="brand-name">Marantz</span><span class="brand-dot">●</span>
+        <span class="brand-name">Bose</span><span class="brand-dot">●</span>
+        <span class="brand-name">JBL</span><span class="brand-dot">●</span>
+        <span class="brand-name">Sony</span><span class="brand-dot">●</span>
+        <span class="brand-name">Samsung</span><span class="brand-dot">●</span>
+        <span class="brand-name">Yamaha</span><span class="brand-dot">●</span>
+        <span class="brand-name">Denon</span><span class="brand-dot">●</span>
+        <span class="brand-name">Klipsch</span><span class="brand-dot">●</span>
+        <span class="brand-name">QSC</span><span class="brand-dot">●</span>
+        <span class="brand-name">Harman</span><span class="brand-dot">●</span>
+        <span class="brand-name">Marantz</span><span class="brand-dot">●</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-strip" id="contact-home">
+    <div class="contact-text">
+      <h2>Ready to Elevate Your <em>Sound?</em></h2>
+      <p>Visit us in Coimbatore or call to schedule a free consultation. We'll come to your space.</p>
+    </div>
+    <div class="contact-info">
+      <div class="contact-detail">
+        <div class="contact-detail-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <span>+91 98XXX XXXXX</span>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-detail-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <span>Coimbatore, Tamil Nadu</span>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-detail-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <span>info@digitalaudiocbe.com</span>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">DIGITAL <span>AUDIO</span> — CBE</div>
+    <div class="footer-links">
+      <a onclick="showPage('home')">Home</a>
+      <a onclick="showPage('theater')">Theater</a>
+      <a onclick="showPage('rental')">Rental</a>
+    </div>
+    <div class="footer-copy">© 2025 Digital Audio, Coimbatore</div>
+  </footer>
+
+</div>
+
+<!-- ===========================
+     PAGE 2 — HOME THEATER
+=========================== -->
+<div class="page" id="page-theater">
+
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="theater-bg-vis">
+      <div style="position:relative; width:80%; max-width:500px;">
+        <div class="theater-screen">
+          <div class="theater-glow"></div>
+        </div>
+        <div class="theater-seats">
+          <div class="seat-row">
+            <div class="seat"></div><div class="seat"></div><div class="seat"></div>
+            <div class="seat"></div><div class="seat"></div><div class="seat"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fade-left"></div>
+    <div class="fade-top"></div>
+    <div class="page-hero-content">
+      <div class="page-eyebrow">Home Theater Setups</div>
+      <h1 class="page-title">
+        Your Private<br><em>Cinema Awaits</em>
+      </h1>
+      <p class="page-subtitle">From intimate 5.1 lounges to full Dolby Atmos screening rooms — we design, supply, and install your dream home theater in Coimbatore.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">Choose Your Experience</div>
+    <h2 class="section-heading">Theater <em>Packages</em></h2>
+    <div class="packages-grid">
+      <div class="package-card">
+        <div class="package-tag">Essential</div>
+        <div class="package-name">Starter Cinema</div>
+        <p class="package-desc">Perfect for living rooms and compact spaces. Great picture, clean sound, cinematic upgrade from your regular TV setup.</p>
+        <ul class="feature-list">
+          <li>65" 4K Smart Display</li>
+          <li>5.1 Channel Surround Sound</li>
+          <li>AV Receiver (Yamaha/Denon)</li>
+          <li>Satellite Speakers + Subwoofer</li>
+          <li>Professional Cable Management</li>
+          <li class="disabled">Dolby Atmos Enabled</li>
+          <li class="disabled">Acoustic Room Treatment</li>
+          <li class="disabled">Projection System</li>
+        </ul>
+      </div>
+      <div class="package-card featured">
+        <div class="package-tag">★ Most Popular</div>
+        <div class="package-name">Premium Atmos</div>
+        <p class="package-desc">The sweet spot for audiophiles. A dedicated room transformed into a true Dolby Atmos experience with precision acoustic treatment.</p>
+        <ul class="feature-list">
+          <li>4K Projector + 120" Screen</li>
+          <li>7.1.4 Dolby Atmos System</li>
+          <li>Marantz / Denon AV Processor</li>
+          <li>Klipsch / JBL Speaker Array</li>
+          <li>Professional Cable Management</li>
+          <li>Dolby Atmos Enabled</li>
+          <li>Acoustic Room Treatment</li>
+          <li class="disabled">Projection System Upgrade</li>
+        </ul>
+      </div>
+      <div class="package-card">
+        <div class="package-tag">Ultra</div>
+        <div class="package-name">Elite Screening Room</div>
+        <p class="package-desc">For those who accept nothing less than the absolute best. A fully dedicated cinema room rivalling commercial movie theaters.</p>
+        <ul class="feature-list">
+          <li>4K Laser Projector (6000+ lumens)</li>
+          <li>9.2.6 Dolby Atmos / DTS:X</li>
+          <li>High-End AV Processor</li>
+          <li>Custom Speaker Configuration</li>
+          <li>Premium Cable Management</li>
+          <li>Dolby Atmos Enabled</li>
+          <li>Full Acoustic Treatment</li>
+          <li>Motorised Screen + Seating</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="process-section">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-heading">Our <em>Installation Process</em></h2>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="process-step-num">01</div>
+        <div class="process-step-title">Site Visit & Consultation</div>
+        <p class="process-step-desc">Our engineers visit your space, assess acoustics, dimensions, and lighting to recommend the ideal setup.</p>
+        <div class="process-step-arrow">→</div>
+      </div>
+      <div class="process-step">
+        <div class="process-step-num">02</div>
+        <div class="process-step-title">Custom Design & Quote</div>
+        <p class="process-step-desc">We create a detailed layout plan and equipment list tailored to your room and budget, with a transparent quotation.</p>
+        <div class="process-step-arrow">→</div>
+      </div>
+      <div class="process-step">
+        <div class="process-step-num">03</div>
+        <div class="process-step-title">Supply & Installation</div>
+        <p class="process-step-desc">Equipment sourced from authorised dealers, installed cleanly and professionally with zero visible clutter.</p>
+        <div class="process-step-arrow">→</div>
+      </div>
+      <div class="process-step">
+        <div class="process-step-num">04</div>
+        <div class="process-step-title">Calibration & Handover</div>
+        <p class="process-step-desc">Full system calibration, acoustic tuning, demo session, and walkthrough so you get the most out of your setup.</p>
+        <div class="process-step-arrow">→</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">Brands We Install</div>
+    <h2 class="section-heading">Authorised <em>Partners</em></h2>
+    <p class="section-body" style="max-width:560px;">We source equipment only from authorised distributors, ensuring genuine products with full manufacturer warranty.</p>
+    <div class="brands-grid">
+      <div class="brand-pill">Sony</div>
+      <div class="brand-pill">Samsung</div>
+      <div class="brand-pill">LG</div>
+      <div class="brand-pill">Epson</div>
+      <div class="brand-pill">BenQ</div>
+      <div class="brand-pill">Yamaha</div>
+      <div class="brand-pill">Denon</div>
+      <div class="brand-pill">Marantz</div>
+      <div class="brand-pill">Bose</div>
+      <div class="brand-pill">JBL</div>
+      <div class="brand-pill">Klipsch</div>
+      <div class="brand-pill">KEF</div>
+      <div class="brand-pill">QSC</div>
+      <div class="brand-pill">Harman</div>
+      <div class="brand-pill">SVS</div>
+      <div class="brand-pill">Polk Audio</div>
+    </div>
+  </section>
+
+  <div class="contact-strip" id="contact-theater">
+    <div class="contact-text">
+      <h2>Book Your Free <em>Site Visit</em></h2>
+      <p>We'll visit your space and give you a detailed, no-obligation consultation and quote.</p>
+    </div>
+    <div class="contact-info">
+      <button class="btn-gold" onclick="showPage('rental'); setTimeout(scrollToContact,100)">Request Quote</button>
+      <div class="contact-detail" style="margin-top:12px;">
+        <div class="contact-detail-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <span>+91 98XXX XXXXX</span>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">DIGITAL <span>AUDIO</span> — CBE</div>
+    <div class="footer-links">
+      <a onclick="showPage('home')">Home</a>
+      <a onclick="showPage('theater')">Theater</a>
+      <a onclick="showPage('rental')">Rental</a>
+    </div>
+    <div class="footer-copy">© 2025 Digital Audio, Coimbatore</div>
+  </footer>
+
+</div>
+
+<!-- ===========================
+     PAGE 3 — AUDIO RENTAL
+=========================== -->
+<div class="page" id="page-rental">
+
+  <section class="page-hero">
+    <div class="page-hero-bg" style="background: var(--black3);"></div>
+    <div class="rental-bg-vis">
+      <div class="speaker-art">
+        <div class="speaker-pulse"></div>
+        <div class="speaker-pulse"></div>
+        <div class="speaker-pulse"></div>
+        <div class="speaker-body">
+          <div class="speaker-cone"></div>
+          <div class="speaker-mid"></div>
+          <div class="speaker-port"></div>
+        </div>
+      </div>
+    </div>
+    <div class="fade-left" style="background: linear-gradient(to right, var(--black3) 40%, transparent);"></div>
+    <div class="fade-top" style="background: linear-gradient(to bottom, var(--black) 0%, transparent);"></div>
+    <div class="page-hero-content">
+      <div class="page-eyebrow">Professional Audio Rental</div>
+      <h1 class="page-title">
+        Power Your<br><em>Every Event</em>
+      </h1>
+      <p class="page-subtitle">PA systems, line arrays, monitors, and full-stage audio rigs — available for rent across Coimbatore and Tamil Nadu.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">Audio for Every Occasion</div>
+    <h2 class="section-heading">We Cover <em>All Events</em></h2>
+    <p class="section-body" style="max-width:560px; margin-bottom:0;">From intimate gatherings to massive outdoor concerts — we provide the right sound system, fully set up and operated by our engineers.</p>
+    <div class="event-grid">
+
+      <div class="event-card" style="background-image: url('https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=60'); background-size: cover; background-position: center;">
+        <div class="event-card-overlay"></div>
+        <div class="event-card-top">
+          <div class="event-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8 2 5 5.5 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.5-3-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          </div>
+          <div class="event-num">01</div>
+        </div>
+        <div class="event-name">Weddings</div>
+        <p class="event-desc">Crystal-clear sound for your most important day. From the mandap ceremony to the reception dance floor — we handle all audio zones seamlessly.</p>
+        <div class="event-tags">
+          <span class="etag">PA System</span>
+          <span class="etag">Wireless Mics</span>
+          <span class="etag">Subwoofers</span>
+          <span class="etag">Live Mixing</span>
+          <span class="etag">BGM Setup</span>
+        </div>
+      </div>
+
+      <div class="event-card" style="background-image: url('https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&q=60'); background-size: cover; background-position: center top;">
+        <div class="event-card-overlay"></div>
+        <div class="event-card-top">
+          <div class="event-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div class="event-num">02</div>
+        </div>
+        <div class="event-name">School & College Functions</div>
+        <p class="event-desc">Annual days, prize distributions, cultural fests, farewell events — we provide reliable, clean audio that fills every corner of your auditorium or ground.</p>
+        <div class="event-tags">
+          <span class="etag">Auditorium PA</span>
+          <span class="etag">Podium Mics</span>
+          <span class="etag">Stage Monitors</span>
+          <span class="etag">Playback System</span>
+        </div>
+      </div>
+
+      <div class="event-card" style="background-image: url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=60'); background-size: cover; background-position: center;">
+        <div class="event-card-overlay"></div>
+        <div class="event-card-top">
+          <div class="event-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+          </div>
+          <div class="event-num">03</div>
+        </div>
+        <div class="event-name">Corporate Events</div>
+        <p class="event-desc">Conferences, product launches, AGMs, town halls, and seminars. Professional audio with zero technical hiccups, so your message lands perfectly.</p>
+        <div class="event-tags">
+          <span class="etag">Conference PA</span>
+          <span class="etag">Lapel Mics</span>
+          <span class="etag">Panel Mics</span>
+          <span class="etag">Presentation Audio</span>
+        </div>
+      </div>
+
+      <div class="event-card" style="background-image: url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&q=60'); background-size: cover; background-position: center;">
+        <div class="event-card-overlay"></div>
+        <div class="event-card-top">
+          <div class="event-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          </div>
+          <div class="event-num">04</div>
+        </div>
+        <div class="event-name">Concerts & Live Shows</div>
+        <p class="event-desc">Full-scale line array systems, FOH and monitor mixing, DJ setups, and everything you need to deliver a professional live music experience.</p>
+        <div class="event-tags">
+          <span class="etag">Line Array</span>
+          <span class="etag">FOH Console</span>
+          <span class="etag">IEM System</span>
+          <span class="etag">DJ Rig</span>
+          <span class="etag">Stage Snakes</span>
+        </div>
+      </div>
+
+      <div class="event-card" style="background-image: url('https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800&q=60'); background-size: cover; background-position: center;">
+        <div class="event-card-overlay"></div>
+        <div class="event-card-top">
+          <div class="event-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="event-num">05</div>
+        </div>
+        <div class="event-name">Temple & Religious Events</div>
+        <p class="event-desc">Outdoor distributed audio for temple festivals, religious gatherings, processions, and devotional programs. Wide coverage with zero distortion.</p>
+        <div class="event-tags">
+          <span class="etag">Outdoor PA</span>
+          <span class="etag">Column Speakers</span>
+          <span class="etag">Wireless Mics</span>
+          <span class="etag">Long-range Audio</span>
+        </div>
+      </div>
+
+      <div class="event-card" style="background-image: url('https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&q=60'); background-size: cover; background-position: center;">
+        <div class="event-card-overlay"></div>
+        <div class="event-card-top">
+          <div class="event-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="event-num">06</div>
+        </div>
+        <div class="event-name">Sports & Outdoor Events</div>
+        <p class="event-desc">Stadium announcements, sports day events, marathons, outdoor gatherings — high-output systems that cut through noise and reach every corner.</p>
+        <div class="event-tags">
+          <span class="etag">Stadium PA</span>
+          <span class="etag">Announcement System</span>
+          <span class="etag">Weather-resistant Rigs</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="section-label">What's In Our Inventory</div>
+    <h2 class="section-heading">Our <em>Equipment Fleet</em></h2>
+    <p class="section-body" style="max-width:580px;">All equipment is regularly serviced and sourced from top global brands. Every rental includes delivery, setup, operation, and teardown by our team.</p>
+    <div class="rental-packages">
+      <div class="rental-pkg">
+        <div class="pkg-tag">Sound Reinforcement</div>
+        <div class="pkg-name">Speakers & Systems</div>
+        <p class="pkg-desc">A wide range of PA and line array systems suited to any venue size.</p>
+        <div class="pkg-includes">In Stock</div>
+        <div class="pkg-item">Line Array Systems (JBL / Nexo / Bose)</div>
+        <div class="pkg-item">Powered PA Speakers (500W – 2000W)</div>
+        <div class="pkg-item">18" & 21" Subwoofers</div>
+        <div class="pkg-item">Column & Ceiling Speakers</div>
+        <div class="pkg-item">Stage Wedge Monitors</div>
+      </div>
+      <div class="rental-pkg center-pkg">
+        <div class="pkg-tag">Microphones & Wireless</div>
+        <div class="pkg-name">Mics & Wireless</div>
+        <p class="pkg-desc">A complete range of professional wireless and wired microphone solutions for every stage and scenario.</p>
+        <div class="pkg-includes">In Stock</div>
+        <div class="pkg-item">Wireless Handheld Microphones (Shure / Sennheiser)</div>
+        <div class="pkg-item">Wireless Lapel / Collar Mics</div>
+        <div class="pkg-item">Podium & Gooseneck Mics</div>
+        <div class="pkg-item">Choir / Boundary Mics</div>
+        <div class="pkg-item">Mic Stands & Boom Arms</div>
+      </div>
+      <div class="rental-pkg">
+        <div class="pkg-tag">Control & Processing</div>
+        <div class="pkg-name">Mixers & Processors</div>
+        <p class="pkg-desc">Professional-grade mixing and signal processing for every scale of event.</p>
+        <div class="pkg-includes">In Stock</div>
+        <div class="pkg-item">Digital Mixing Consoles (16 – 48 Ch)</div>
+        <div class="pkg-item">Power Amplifiers (Crown / QSC)</div>
+        <div class="pkg-item">Signal Processors & DSPs</div>
+        <div class="pkg-item">Graphic & Parametric EQs</div>
+        <div class="pkg-item">Stage Snakes & Patch Panels</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="booking-section" id="booking">
+    <div class="section-label">Book Now</div>
+    <h2 class="section-heading" style="margin-bottom:0;">Enquire & <em>Reserve</em></h2>
+    <div class="booking-grid">
+      <div class="booking-info">
+        <h3>Let's Make Your Event <em>Sound Incredible</em></h3>
+        <p>Fill in the form and our team will get back to you within 2 hours with availability and a detailed quote. We cover Coimbatore and all surrounding districts.</p>
+        <div class="booking-steps">
+          <div class="booking-step">
+            <div class="booking-step-num">1</div>
+            <div class="booking-step-text">
+              <span>Submit Your Enquiry</span>
+              <span>Tell us your event type, date, and requirements</span>
+            </div>
+          </div>
+          <div class="booking-step">
+            <div class="booking-step-num">2</div>
+            <div class="booking-step-text">
+              <span>Get a Custom Quote</span>
+              <span>We'll respond within 2 hours with pricing</span>
+            </div>
+          </div>
+          <div class="booking-step">
+            <div class="booking-step-num">3</div>
+            <div class="booking-step-text">
+              <span>Confirm & Relax</span>
+              <span>We handle setup, operation, and packdown</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="booking-form">
+        <div class="form-row">
+          <div class="form-field">
+            <label>Your Name</label>
+            <input type="text" placeholder="Rahul Kumar">
+          </div>
+          <div class="form-field">
+            <label>Phone Number</label>
+            <input type="tel" placeholder="+91 98XXX XXXXX">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label>Event Type</label>
+            <select>
+              <option value="" disabled selected>Select Event Type</option>
+              <option>Wedding</option>
+              <option>Corporate Event</option>
+              <option>Concert / Live Music</option>
+              <option>Cultural Program</option>
+              <option>Birthday / House Party</option>
+              <option>Conference / Seminar</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Event Date</label>
+            <input type="date">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label>Expected Audience Size</label>
+            <select>
+              <option value="" disabled selected>Select Size</option>
+              <option>Under 100</option>
+              <option>100 – 300</option>
+              <option>300 – 1000</option>
+              <option>1000 – 3000</option>
+              <option>3000+</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Venue / Location</label>
+            <input type="text" placeholder="Event venue or area">
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Additional Requirements</label>
+          <textarea placeholder="Tell us anything specific — equipment needed, stage size, duration, special requests..."></textarea>
+        </div>
+        <button class="form-submit">Send Enquiry →</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">DIGITAL <span>AUDIO</span> — CBE</div>
+    <div class="footer-links">
+      <a onclick="showPage('home')">Home</a>
+      <a onclick="showPage('theater')">Theater</a>
+      <a onclick="showPage('rental')">Rental</a>
+    </div>
+    <div class="footer-copy">© 2025 Digital Audio, Coimbatore</div>
+  </footer>
+
+</div>
+
+<script>
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    const navEl = document.getElementById('nav-' + id);
+    if (navEl) navEl.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function scrollToContact() {
+    const activePage = document.querySelector('.page.active');
+    const contact = activePage.querySelector('[id^="contact"], #booking');
+    if (contact) contact.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('mainNav');
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+  
+</script>
+<script>
+  function showPage(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    const nav = document.getElementById('nav-' + page);
+    if (nav) nav.classList.add('active');
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function scrollToContact() {
+    const el = document.querySelector('[id^="contact-"]');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
